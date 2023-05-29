@@ -1,0 +1,12 @@
+<!-- slideshow-product.liquid -->
+<div class="product-card js-product-card product-card--style1" data-price="{{ product.price }}">
+  <div class="product-card__image-wr">
+    <img class="grid-image-section__img_1 expand-image"
+         src="{{ image | image_url }}"
+         alt="SlideShowImage"  />
+    <noscript>
+      <img class="lazyloaded" src="{{ image | img_url: '900x' }}" alt="{{ image.alt | escape }}">
+    </noscript>
+    <h4 class="slide-text">{{ text }}</h4>
+  </div>
+</div>

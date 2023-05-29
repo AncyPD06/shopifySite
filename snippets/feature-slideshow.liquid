@@ -1,0 +1,150 @@
+<!-- feature-slideshow.liquid -->
+<style>
+  .customstyle-slideshow .slick-list {
+    padding-left: 20%;
+    padding-right: 20%;
+  }
+  .customstyle-slideshow .productlist-item {
+    margin: 0 5px;
+  }
+  .customstyle-slideshow .heading-slick-arrow:before {
+    color: white;
+    font-size: 18px;
+  }
+  .project-list-custom-carousel .product-card {
+    border-radius: 0;
+  }
+  .slide-text {
+    color: white;
+    text-align: start;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px;
+    padding-right: 25%;
+    font-size: 15px;
+  }
+  .customstyle-slideshow .productlist-item {
+    position:relative;
+  }
+  .customstyle-slideshow .productlist-item:not(.slick-current):before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0.5rem;
+  }
+  .expand-image {
+    width: 100%;
+  }
+  .customstyle-slideshow .productlist-custom-arrowcontainer {
+    display: block;
+  }
+  .customstyle-slideshow .slick-next {
+    right: 8%;
+  }
+  .customstyle-slideshow .slick-prev {
+    left: 8%;
+  }
+  .customstyle-slideshow .product-card__image-wr {
+    border-radius: 0.5rem;
+  }
+  .buttonOverRideStyleCarousel {
+    display: block; 
+    height: 46px; 
+    width: 46px;
+    top: 35% !important; 
+    position: absolute; 
+    background: none; 
+    border: none; 
+    top: auto; 
+    transform: initial;
+  }
+  .slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
+    background:transparent;
+  }
+  /* TABLET */
+  @media (min-width:767px) {
+    .customstyle-slideshow .slick-next {
+       right: 13%;
+    }
+    .customstyle-slideshow .slick-prev {
+       left: 13%;
+     }
+    .slide-text {
+      padding: 25px;
+      font-size: 25px;
+      padding-right: 30%;
+    }
+    .customstyle-slideshow .productlist-item:not(.slick-current):before {
+      border-radius: 1.5rem;
+    }
+    .customstyle-slideshow .product-card__image-wr {
+      border-radius: 1.5rem;
+    }
+    .buttonOverRideStyleCarousel {
+      top: 43% !important; 
+    }
+  }
+  /* DESKTOP */
+  @media (min-width:992px) {
+    .customstyle-slideshow .slick-next {
+      right: 15%;
+     }
+    .customstyle-slideshow .slick-prev {
+      left: 15%;
+     }
+    .slide-text {
+      padding: 50px;
+      font-size: 35px;
+    }
+  }
+</style>
+
+{% if product.metafields.custom.feature_slideshow_image != blank %}
+<div class="customstyle-slideshow productlist-container project-list-custom-carousel" data-aos="{{block.settings.animation}}">
+  {%- include 'style-section' -%}
+  <div class="section-block">
+    <div class="flex justify-content-between">
+      <div class=" flex productlist-custom-arrowcontainer" style="column-gap: 1.5rem; flex-basis: 0;"> 
+        <button type="button" data-role="none" class="slick-prev heading-slick-arrow slick-arrow customarrowprevv buttonOverRideStyleCarousel" aria-label="Previous" role="button">Previous</button>
+        <button type="button" data-role="none" class="slick-next heading-slick-arrow slick-arrow customarrownextt buttonOverRideStyleCarousel" aria-label="Next" role="button">Next</button>
+      </div>
+    </div>
+    <div class="productlist-wrapper dots-negative" data-aos="{{block.settings.animation}}">
+      <div class="productlist-slider row {% unless section.settings.padding %} m-0 {% endunless %}" id="Productlist"
+           data-slick='{"prevArrow": ".customarrowprevv", "nextArrow": ".customarrownextt"}'
+           data-rows="{{block.settings.rows}}"
+           data-slidesToShow="{{block.settings.show}}"
+           data-slidesToShow-tablet="{{block.settings.show}}"
+           data-slidesToShow-mobile="1"
+           data-arrows="{{ block.settings.arrows }}"
+           data-dots="{{ block.settings.dots }}" 
+           data-draggable="{{ block.settings.draggable }}" 
+           data-infinite="{{ block.settings.infinite }}"
+           data-section-id="relate-{{section.id}}"
+           data-section-type="slickCarousels">
+      {% assign images = product.metafields.custom.feature_slideshow_image.value %}
+      {% assign texts = product.metafields.custom.feature_slideshow_title.value %}
+        {% if images != blank %}
+          {% for image in images %}
+          {% assign text = texts[forloop.index0] %}
+            <div class="productlist-item col {% unless section.settings.padding %} p-0 {% endunless %}">
+              {% include 'slideshow-product', image: image, text: text %}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..limit) -%}
+            <div class="productlist-item col">
+              {%- include 'product-grid-blank' -%}
+            </div>
+          {%- endfor -%}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

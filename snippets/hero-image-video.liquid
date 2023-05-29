@@ -1,0 +1,6 @@
+{% if product.metafields.custom.hero_image_video != blank %}
+  <img
+    class="hero-image"
+    src="{{ product.metafields.custom.hero_image_video | file_url }}"
+    alt="Custom Image">
+{% endif %}

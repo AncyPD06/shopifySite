@@ -1,0 +1,260 @@
+<!-- grid-section-image.liquid -->
+<div class="container-fluid grid-image-section grid-image-section__main_{{ section.id }}">
+  <div class="row align-items-center">
+    <div class="col-md-8 col-12 grid-image-section__cont_1 grid-image-section__cont_movable_1_{{ section.id }}">
+      <img
+        class="grid-image-section__img_1"
+        src="{{ section.settings.custom_image | img_url:'960x' }}"
+        alt="Custom Image"
+      >
+    </div>
+    <div class="col-md-6  col-12 grid-image-section__cont_2 grid-image-section__cont_movable_2_{{ section.id }}">
+      <div class="row">
+        <div>
+            <h3 class="grid-image-section__title"> {{ section.settings.title }} </h3>
+            <p class="grid-image-section__sub_title">{{ section.settings.sub_title }}</p>
+        </div>
+      <a class="btn btn-theme btn-new grid-image-section__button rounded-pill" href="{{section.settings.button_link | default: '#'}}">{{ section.settings.button_name }}</a>
+      </div>
+      
+      </div>
+  </div>
+</div>
+
+
+<style>
+  .grid-image-section__button{
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #424242;
+  }
+  .grid-image-section__main_{{ section.id }}{
+    margin: {{ section.settings.marginsection }}
+  }
+  @media (max-width:767px){
+    .grid-image-section__main_{{ section.id }}{
+      margin: {{ section.settings.marginmobile }};
+    }
+  }
+  .grid-image-section__main_{{ section.id }}  
+  .grid-image-section__sub_title{
+/*     margin-bottom: 1.5rem; */
+    color: {{ section.settings.sub_title_color }};
+    font-size: 0.875rem;
+  }
+  .grid-image-section__main_{{ section.id }} 
+  .grid-image-section__title{
+    color: {{ section.settings.title_color }};
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+  .grid-image-section__main_{{ section.id }} 
+  .grid-image-section__img_1 {
+    width: 100%;
+    border-radius: {{ section.settings.border_radius }}px;
+  }
+  .grid-image-section__main_{{ section.id }} 
+  .grid-image-section__cont_2{
+      position: absolute;
+      max-height: 92%;
+      height: 100%;
+      z-index: 1;
+/*       background-color: {{ section.settings.bg_section }}; */
+      right: 0;
+/*       border-radius: {{ section.settings.border_radius }}px;
+      background-size: cover;
+      background-position: right;
+      background-repeat: no-repeat;
+      background-image: url({{ section.settings.bg_image | img_url:'960x' }});
+      align-items: start;
+      justify-content: center; */
+      display: flex;
+/*       flex-direction: column;
+      padding: 15% 5%; */
+  }
+        .grid-image-section__main_{{ section.id }} 
+  .grid-image-section__cont_2 .row{
+/*       position: absolute; */
+/*       max-height: 440px; */
+/*       height: 100%; */
+/*       z-index: 3; */
+      background-color: {{ section.settings.bg_section }};
+/*       right: 0; */
+/*       top: -120px; */
+      border-radius: {{ section.settings.border_radius }}px;
+      background-size: cover;
+      background-position: right;
+      background-repeat: no-repeat;
+      background-image: url({{ section.settings.bg_image | img_url:'960x' }});
+      align-items: start;
+      justify-content: space-evenly;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1rem;
+        margin: 0;
+        width: 100%;
+  }
+  .grid-image-section__main_{{ section.id }}   .row{
+      position: relative;
+    }
+
+  {%- case section.settings.layout_type -%}
+    {%- when 'layout-1' -%}
+    {%- when 'layout-2' -%}
+    .grid-image-section__main_{{ section.id }} 
+      .grid-image-section__cont_2{
+        left:0;
+      }
+        .grid-image-section__main_{{ section.id }} 
+      .grid-image-section__cont_1{
+        right:0;
+      }
+        .grid-image-section__main_{{ section.id }} .row{
+            flex-direction: row-reverse;
+          }
+  {%- endcase -%}
+</style>
+
+
+  <script type="text/javascript">
+    {
+    let container = document.querySelector('.grid-image-section__main_{{ section.id }}');
+
+
+    let box1 = document.querySelector('.grid-image-section__main_{{ section.id }} .grid-image-section__cont_movable_1_{{ section.id }}');
+    let box2 = document.querySelector('.grid-image-section__main_{{ section.id }} .grid-image-section__cont_movable_2_{{ section.id }}');
+
+      
+    
+    
+
+    const MAX_OFFSET = 30; //in percentage
+      
+
+    window.addEventListener('scroll', () => {
+      if(document.body.clientWidth >= 768){
+        const c = container.getBoundingClientRect();
+        
+        if(c.top < window.innerHeight && c.top > 0 ){
+          window.innerHeight - c.top;
+          var transformPosition =  (c.top/ window.innerHeight  ) * MAX_OFFSET - 5;
+       
+        if( transformPosition < 0 )
+            transformPosition = 0;
+        box2.style.transform = `translateY(${transformPosition}%)`;
+      } 
+      }else{
+         box1.style.transform = `initial`;
+        box2.style.transform = `initial`;
+      }
+        
+    });
+    }
+</script>
+
+{% schema %}
+{
+  "name": "Grid Image Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "marginsection",
+      "label": "Margin Section",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "marginmobile",
+      "label": "Margin Mobile",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Title"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Sub title",
+      "default": "Title"
+    },
+    {
+      "type": "text",
+      "id": "button_name",
+      "label": "Button name",
+      "default": "Button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "bg_section",
+      "label": "Background Section",
+      "default": "#fefefe"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Colour",
+      "default": "#fefefe"
+    },
+    {
+      "type": "color",
+      "id": "sub_title_color",
+      "label": "Sub Title Colour",
+      "default": "#fefefe"
+    },
+    {
+        "type": "select",
+        "id": "layout_type",
+        "label": "Layout Type",
+        "default": "layout-1",
+        "options": [
+          {
+            "value": "layout-1",
+            "label": "Layout 1"
+          },
+          {
+            "value": "layout-2",
+            "label": "Layout 2"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Grid Image Section",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,157 @@
+<!-- feature-callout.liquid -->
+{% if pfc_title != '' and  pfc_image != blank and  pfc_description != '' %}
+  <div class="container-fluid grid-image-section grid-image-section__main_{{ block.id }}">
+    <div class="row align-items-center">
+      <div class="col-md-8 col-12 grid-image-section__cont_1 grid-image-section__cont_movable_1_{{ block.id }}">
+        <img
+          class="grid-image-section__img_1"
+          src="{{ pfc_image | file_url }}"
+          alt="Custom Image"
+        >
+      </div>
+      <div class="col-md-6  col-12 grid-image-section__cont_2 grid-image-section__cont_movable_2_{{ block.id }}">
+        <div class="row">
+          <div>
+            <h3 class="grid-image-section__title"> {{ pfc_title }} </h3>
+            <span class="grid-image-section__sub_title">{{ pfc_description | metafield_tag }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .metafield-rich_text_field ul {
+    padding-left: 1.5rem !important;
+  }
+  .grid-image-section__main_{{ block.id }}{
+    margin: 35px 0px;
+  }
+  .grid-image-section__main_{{ block.id }}
+  .grid-image-section__title {
+    color: #4C4B4D;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+  .grid-image-section__main_{{ block.id }}
+  .grid-image-section__sub_title{
+    color: #424242;
+    font-size: 0.875rem;
+  }
+/*  TABLET  */
+  @media (min-width:767px){
+    .grid-image-section__main_{{ block.id }}
+    .grid-image-section__title {
+      font-size: 1.563rem !important;
+    }
+    .grid-image-section__main_{{ block.id }}
+    .grid-image-section__sub_title{
+      font-size: 1rem !important;
+    }
+  }
+/*  DESKTOP  */
+  @media (min-width:992px){
+    .grid-image-section__main_{{ block.id }}{
+      margin: 60px 0px;
+    }
+    .grid-image-section__main_{{ block.id }}
+    .grid-image-section__title {
+      font-size: 1.875rem !important;
+    }
+    .grid-image-section__main_{{ block.id }}
+    .grid-image-section__sub_title{
+      font-size: 1.125rem !important;
+    }
+  } 
+/* LARGE SCREEN */
+  @media (min-width:1400px){
+    .metafield-rich_text_field ul {
+      padding-left: 2.5rem !important;
+    }
+  }
+
+  .grid-image-section__button{
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    background-color: #424242;
+  }
+  .grid-image-section__button:hover{
+    background-color: #6C8FA5;
+  }
+  .grid-image-section__main_{{ block.id }}
+  .grid-image-section__img_1 {
+    width: 100%;
+    border-radius: 30px;
+  }
+  .grid-image-section__main_{{ block.id }}
+  .grid-image-section__cont_2{
+      position: absolute;
+      max-height: 92%;
+      height: 100%;
+      z-index: 1;
+      right: 0;
+      display: flex;
+  }
+  .grid-image-section__main_{{ block.id }}
+  .grid-image-section__cont_2 .row{
+      background-color: #fcf8f4;
+      border-radius: 30px;
+      align-items: start;
+      justify-content: space-evenly;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1rem;
+      margin: 0;
+      width: 100%;
+  }
+  .grid-image-section__main_{{ block.id }}  .row{
+      position: relative;
+  }
+
+  {%- case section.settings.layout_type -%}
+    {%- when 'layout-1' -%}
+    {%- when 'layout-2' -%}
+    .grid-image-section__main_{{ block.id }} 
+    .grid-image-section__cont_2{
+        left:0;
+    }
+    .grid-image-section__main_{{ block.id }}
+    .grid-image-section__cont_1{
+        right:0;
+    }
+    .grid-image-section__main_{{ block.id }} .row{
+        flex-direction: row-reverse;
+    }
+  {%- endcase -%}
+</style>
+
+<script type="text/javascript">
+  {
+    let container = document.querySelector('.grid-image-section__main_{{ block.id }}');
+
+    let box1 = document.querySelector('.grid-image-section__main_{{ block.id }} .grid-image-section__cont_movable_1_{{ block.id }}');
+    let box2 = document.querySelector('.grid-image-section__main_{{ block.id }} .grid-image-section__cont_movable_2_{{ block.id }}');
+
+    const MAX_OFFSET = 30; //in percentage
+      
+    window.addEventListener('scroll', () => {
+      if(document.body.clientWidth >= 768){
+        const c = container.getBoundingClientRect();
+        
+        if(c.top < window.innerHeight && c.top > 0 ){
+          window.innerHeight - c.top;
+          var transformPosition =  (c.top/ window.innerHeight  ) * MAX_OFFSET - 5;
+       
+          if( transformPosition < 0 )
+            transformPosition = 0;
+          box2.style.transform = `translateY(${transformPosition}%)`;
+        } 
+      }else{
+          box1.style.transform = `initial`;
+          box2.style.transform = `initial`;
+      } 
+    });
+  }
+</script>

@@ -1,0 +1,89 @@
+<!--media-callout.liquid-->
+<style>
+  #playBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: #fff;
+  }
+  .callout-text {
+    font-weight: 800 !important;
+    padding-top: 2rem;
+    padding-right: 4rem;
+  } 
+  .media-callout-video {
+     width: 100%;
+  }
+  .media-callout-container {
+    margin: 35px 0px;
+  }
+  .callout-text {
+    display: none;
+  }
+  @media (max-width:767px) {
+    #video {
+      display: block;
+      width: calc(100% + 40px);
+      margin-left: -20px;
+    }
+  }
+  @media (min-width:767px) {
+    .media-callout-video {
+       border-radius: 30px;
+    }
+    .callout-text {
+      display: block;
+      padding-top: 1.5rem;
+      padding-right: 0rem;
+      font-size: 25px;
+    }
+  }
+  @media (min-width:992px) {
+    #video {;
+      border-radius: 30px;
+    }
+    .media-callout-container {
+      margin: 60px 0px;
+    }
+  }
+</style>
+
+{% if product.metafields.custom.media_callout_title != '' and product.metafields.custom.media_callout_video != blank %}
+<div class="container-fluid media-callout-container">
+  <div class="row align-items-center">
+    <div class="col-md-4 col-12">
+      <img class="callout-text" src="{{ block.settings.gg_logo | img_url: 'master' }}">
+      <h4 class="callout-text">{{ product.metafields.custom.media_callout_title }}</h4>
+    </div>
+    <div class="col-md-8  col-12">
+      <video class="media-callout-video" id="video" src="{{product.metafields.custom.media_callout_video | file_url }}"></video>
+      <img id="playBtn" src="{{ 'play_button.png' | asset_url }}" alt="play">
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+const video = document.getElementById("video");
+video.addEventListener("click", togglePlay);
+const playBtn = document.getElementById("playBtn");
+playBtn.addEventListener("click", togglePlay);
+
+function togglePlay() {
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+}
+
+video.addEventListener("play", () => {
+  playBtn.style.display = "none";
+});
+
+video.addEventListener("pause", () => {
+  playBtn.style.display = "block";
+});
+</script>

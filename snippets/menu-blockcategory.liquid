@@ -1,0 +1,84 @@
+{%- assign titleCheckCategory = link.title | escape | split: '[' | first | downcase -%}
+
+ {%- assign colClass = 'col'  -%} 
+ {% assign blockCount = 0 %}
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'menu_category' %}
+        {%- assign menu_title = block.settings.menu_name | strip | downcase -%}
+        {%- if titleCheckCategory == menu_title -%}
+            {% assign blockCount = blockCount | plus: 1 %}
+        {%- endif -%}
+      {% endcase %}
+  {% endfor %}
+  {%- if blockCount < 3 -%}
+    {%- assign colClass = 'col-4'  -%} 
+  {%- endif -%}
+
+<div class="block-category col-iner ">
+  {%- if settings[ap_html_title] != blank -%}
+    <div class="menu-title">{{ settings[ap_html_title] }}</div>
+  {%- endif -%}
+  <div class="row">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'menu_category' %}
+          {%- assign menu_title = block.settings.menu_name | strip | downcase -%}
+          {%- if titleCheckCategory == menu_title -%}
+           
+            <div class="{{ colClass }} block-category__col-{{ block.id }}">
+              <a href="{{block.settings.category_link | default:'#'}}">
+                <div class="widget-inner">
+                  {%- if block.settings.category_image -%}
+                    <div class="box-image block-category__image-{{ block.id }}">
+                      <img
+                        class="lazyload"
+                        data-src="{{ block.settings.category_image | img_url:'600x' }}"
+                        alt="{{block.settings.category_name}}"
+                      >
+                    </div>
+                  <span>
+                    <p class="block-category__name block-category__name-{{ block.id }}">
+                      
+                        {{ block.settings.category_name }}
+                      
+                    </p>
+                    </span>
+
+                    <style>
+                      .block-category__col-{{ block.id }}
+                      .block-category__name, .block-category__col-{{ block.id }}
+                      a, .block-category__col-{{ block.id }}
+                      a:visited, .block-category__col-{{ block.id }}
+                      a:active{
+                          color: {{block.settings.category_color}};
+                          line-height: 1.3;
+                      }
+                      .block-category__image-{{ block.id }}
+                      img{
+                        width: 100%;
+                        border-radius: {{block.settings.category_image_radius}}px;
+                      }
+                    </style>
+                  {%- endif -%}
+                </div>
+              </a>
+            </div>
+          {%- endif -%}
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+    .block-category__name{
+      position:relative;
+    }
+    .block-category__name::after {
+      content: "→";
+      position: absolute;
+      top: 2px;
+      line-height: 1.2;
+      padding-left: 6px;
+  }
+</style>

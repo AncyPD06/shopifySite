@@ -1,0 +1,94 @@
+<!-- news-letter.liquid -->
+<style>
+  .customstyle-newsletter .form-group .form-control{
+    border-bottom-color:{{section.settings.colorborder}};
+  }
+  .customstyle-newsletter.style2 .form-group .form-control{
+    padding: .8rem 2.25rem;
+    background-color: white;
+    border:1px solid {{section.settings.colorborder}};
+  }
+  .customstyle-newsletter.style2 .form-group .form-control:focus{
+    border-color: var(--g-main);
+  }
+  .customstyle-newsletter {
+    border-radius: 30px;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+  }
+  .customstyle-newsletter{
+    background: #fcf8f4;
+    padding: 100px 50px 100px 50px;
+    margin: 35px 0;
+  }
+  .btn {
+    margin-top: 0 !important;
+  }
+  .input-box {
+    padding: 0.8rem 2.25rem !important;
+    background-color: white !important;
+    border: 1px solid #4c4b4d !important;
+  }
+  @media (max-width:767px){
+    .customstyle-newsletter{
+      padding: 40px 0px 40px 0px;
+    }
+    .signup-button {
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+  }
+  @media (min-width: 992px){
+    .customstyle-newsletter {
+      background-attachment: fixed !important;
+    }
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="customstyle-newsletter newsletter-container lazyload position-relative" 
+       data-aos="{{block.settings.animation}}"
+       data-sizes="auto"
+       data-parent-fit="cover"
+       data-bgset="">
+    <div class="{{ block.settings.setwidth }} text-center">
+      <div class="row d-flex justify-content-center">
+        <div class="{{block.settings.widthbox}}">
+          <div class="px-lg-5 pb-4 row newsletter__heading-section">
+            <div class="col newsletter__heading-icon-section">
+              <img src="{{ block.settings.newsletter_icon | img_url: '40px' }}" />
+            </div>
+            <div class="col text-left p-0 newsletter__heading-title-section">
+              <h3 class="section-title-2 mb-5 font-weight-bold">
+                <span>{{block.settings.title}}</span>
+              </h3>
+            </div>
+            <p class="newsletter__heading-desc">{{ block.settings.desc_secondary }}</p>
+          </div>
+          <div class="form-vertical px-lg-5">
+          {%- form 'customer' -%}
+            {{ form.errors | default_errors }}
+            {%- if form.posted_successfully? -%}
+              <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+            {%- else -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <label for="NewsletterEmail-Product" class="label--hidden">{{ 'general.newsletter_form.newsletter_label' | t }}</label>
+              <div class=" form-group text-center input-group ">
+                <input class="form-control rounded-pill input-box" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" name="contact[email]" id="NewsletterEmail-Product" autocorrect="off" autocapitalize="off">
+                <div class="input-group-append pl-3">
+                  <button type="submit" class="btn btn-theme btn-new rounded-pill" name="commit">
+                    <span class="signup-button d-none d-sm-block">{{ 'general.newsletter_form.submit' | t }}</span>
+                    <span class="d-block d-sm-none"><i class="icon-arrow-right"></i></span>
+                  </button>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

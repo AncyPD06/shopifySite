@@ -1,0 +1,21 @@
+{% render 'shogun-products', content: product %}
+{{product.metafields.shogun.above}}
+
+{%- case settings.productpage -%}
+  {%- when 'product-1' -%} {%- section 'product-template-1' -%}
+  {%- when 'product-2' -%} {%- section 'product-template-2' -%}
+  {%- when 'product-3' -%} {%- section 'product-template-3' -%}
+  {%- when 'product-4' -%} {%- section 'product-template-4' -%}
+  {%- when 'product-5' -%} {%- section 'product-template-5' -%}
+  {%- when 'product-6' -%} {%- section 'product-template-6' -%}
+  {%- when 'product-7' -%} {%- section 'product-template-7' -%}
+  {%- when 'product-8' -%} {%- section 'product-template-8' -%}
+  {%- when 'product-9' -%} {%- section 'product-template-9' -%}
+  {%- when 'product-10' -%} {%- section 'product-template-10' -%}
+  {%- when 'product-April-2023' -%} {%- section 'product-template-new' -%}
+{%- else -%}
+  Missing liquid
+{%- endcase -%}
+
+
+{{product.metafields.shogun.below}}

@@ -1,0 +1,37 @@
+<!-- drawer-nav.liquid -->
+
+<div class="grid grid--no-gutters meganav__scroller meganav__scroller--has-list">
+  <div class="grid__item meganav__list">
+    {%- for childlink in link.links -%}
+      {%- if childlink.links != blank -%}
+        {%- for grandchildlink in childlink.links -%}
+          <li class="drawer__nav-item">
+            <a
+              href="{{ grandchildlink.url }}"
+              class="drawer__nav-link meganav__link{% if grandchildlink.active %} meganav__link--active{% endif %}"
+              {% if grandchildlink.active %}
+                aria-current="page"
+              {% endif %}
+            >
+              {%- include 'processMenuTitle' with itemName:grandchildlink.title -%}
+              {%- include 'processMenuLabel' with itemName:grandchildlink.title -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        <li class="drawer__nav-item">
+          <a
+            href="{{ childlink.url }}"
+            class="drawer__nav-link meganav__link{% if childlink.active %} meganav__link--active{% endif %}"
+            {% if childlink.active %}
+              aria-current="page"
+            {% endif %}
+          >
+            {%- include 'processMenuTitle' with itemName:childlink.title -%}
+            {%- include 'processMenuLabel' with itemName:childlink.title -%}
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>

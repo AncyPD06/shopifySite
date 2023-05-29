@@ -1,0 +1,51 @@
+<!-- service-callout.liquid -->
+<style>
+  .customstyle-service-callout .iconx8 svg, .customstyle-service-callout .iconx8 .icon, .customstyle-service-callout .iconx8 [class^=icon-]{
+    width: 55px;
+    height: 55px;
+    font-size: 55px;
+  }
+  .customstyle-service-callout {
+    margin-top: 35px;
+  }
+  @media (min-width: 992px) {
+    .customstyle-service-callout {
+      margin-top: 60px;
+    }
+  }
+</style>
+
+<div class="customstyle-service-callout grid-image-section__main_1 {% if section.settings.layout == 'style-3' %} block-sv3 {% endif %}" data-aos={{block.settings.animation}}>
+  {%- include 'style-section' -%}
+    <div class="row services-section-container no-gutters">
+      <div class="media service-1 text-left py-3" style="background-color:transparent">
+        <span class=" mr-4 iconx8" style="color:transparent;">
+          {{block.settings.free_shipping_svg | default:'[[ Icon ]]'}}
+        </span>
+        <div class="media-body">
+          <h6 class="mt-0 mb-1 h6" style="color:{{block.settings.titlecolor}};">{{block.settings.shipping-title}}</h6>
+          <div style="color:{{block.settings.subcolor}};">{{block.settings.shipping-description}}</div>
+        </div>
+        </div>
+          <div class="media service-2 text-left py-3" style="background-color:transparent">
+          <span class=" mr-4 iconx8" style="color:transparent;">
+            {{block.settings.support_svg | default:'[[ Icon ]]'}}
+          </span>
+          <div class="media-body">
+            <h6 class="mt-0 mb-1 h6" style="color:{{block.settings.titlecolor}};">{{block.settings.support-title}}</h6>
+            <div style="color:{{block.settings.subcolor}};">{{block.settings.support-description}}</div>
+          </div>
+        </div>
+        <div class="media service-3 text-left py-3" style="background-color:transparent">
+          <span class=" mr-4 iconx8" style="color:transparent;">
+            {{block.settings.warranty_svg | default:'[[ Icon ]]'}}
+          </span>
+          <div class="media-body">
+            <h6 class="mt-0 mb-1 h6" style="color:{{block.settings.titlecolor}};">{{block.settings.warranty-title}}</h6>
+            <div style="color:{{block.settings.subcolor}};">{{block.settings.warranty-description}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

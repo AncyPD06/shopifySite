@@ -1,0 +1,107 @@
+<!-- perfect-pairings.liquid -->
+<style>
+  .customstyle-prefect-pairing .slick-list {
+    padding: 0 20% 30px 0;
+  }
+  .h4 {
+    padding-top: 0;
+  }
+  .show-arrow {
+    display: none;
+  }
+
+
+  @media (max-width: 991px) {
+    .customstyle-prefect-pairing .product-card__overlay {
+      display: none !important;
+    }
+  }
+  
+
+/* TABLET */
+  @media (min-width:767px) {
+    .customstyle-prefect-pairing .slick-list {
+        padding: 0 15% 30px 0;
+    }
+    .show-arrow {
+      display: block;
+    }
+  }
+
+  
+/* DESKTOP */
+  @media (min-width:992px) {
+    .customstyle-prefect-pairing .product-card {
+        border-radius: 25px;
+        overflow: hidden;
+    }
+  }
+</style>
+
+{%- if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' -%}
+  {%- assign found_a_collection = false -%}
+  {%- for c in product.collections -%}
+    {%- if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 -%}
+      {%- assign found_a_collection = true -%}
+      {%- assign collection = c -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- assign produccount = columns_product -%}
+{%- assign currentProduct = product -%}
+
+
+<div id="productrelated"  class="container-fluid {{block.settings.setwidthcontent}} customstyle-prefect-pairing productlist-container" data-aos="auto">
+    <div class="section-block">
+  {%- if block.settings.relate_products_title != blank -%}
+    <div class="flex justify-content-between">
+      <div>
+        <h4 class="mb-5 h4">{{ block.settings.relate_products_title }}</h4>
+      </div>
+      {%- assign buttonOverRideStyleCarousel = "display: block; position: relative; top: auto; transform: initial;"  -%}
+      <div class="show-arrow">
+        <div class="flex productlist-custom-arrowcontainer" style="column-gap: 1.5rem; flex-basis: 0;"> 
+          <button type="button" data-role="none" class="slick-prev s-arrow heading-slick-arrow slick-arrow customarrowprev" aria-label="Previous" role="button" style="{{ buttonOverRideStyleCarousel }}">Previous</button>
+          <button type="button" data-role="none" class="slick-next s-arrow heading-slick-arrow slick-arrow customarrownext" aria-label="Next" role="button" style="{{ buttonOverRideStyleCarousel }}">Next</button>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+  
+  <div class="js-slick-carousel" data-aos="auto">
+    <div 
+      class="row slick_content productlist-slider"
+      data-slick='{"prevArrow": ".customarrowprev", "nextArrow": ".customarrownext"}'
+      data-rows="{{block.settings.rows}}" 
+      data-slidesToShow="3"
+      data-slidesToShow-tablet="3"
+      data-slidesToShow-mobile="1"
+      data-slidesToshow-arrow="{{block.settings.show-arrow}}" 
+      data-slidesToshow-arrow-tablet="{{block.settings.show-arrow}}"
+      data-slidesToshow-arrow-mobile="1"
+      data-arrows="{{block.settings.arrows}}"
+      data-dots="{{block.settings.dots}}" 
+      data-draggable="{{block.settings.draggable}}" 
+      data-infinite="{{ block.settings.infinite }}" 
+      data-section-id="relate-{{section.id}}" 
+      data-section-type="slickCarousels" >
+      {%- assign collection_produclists = collection.products -%}
+      {%- if collection != blank -%}
+        {%- for product in collection_produclists limit: 6 -%}
+           {%- if product.handle != currentProduct.handle -%}
+          <div class="productlist-item col">
+            {%- include 'product-card', product: product -%}
+          </div>  
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+        <div class="productlist-item col">
+          {%- include 'product-grid-blank' -%}
+        </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+</div>

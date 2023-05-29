@@ -1,0 +1,366 @@
+<!-- lookbook-carousel2.liquid -->
+
+<div class="customstyle{{ section.id }} quote-carosel__quote" data-aos="{{section.settings.animation}}">
+  <div class="{{ section.settings.setwidth }}">
+    {%- include 'style-section' -%}
+    <div class="section-block">
+      {%- include 'section-heading' -%}
+      <div class="lookbooks-wrapper dots-negative">
+        <div
+          class=" row service-list-slider-1 service-list-slider-1-{{ section.id }}"
+          id="service-list-{{ section.id }}"
+          data-rows="{{section.settings.rows}}"
+          data-slidesToShow="1"
+          data-slidestoscroll="1"
+          data-autoplay="true"
+          data-arrows="{{ section.settings.arrows }}"
+          data-dots="{{ section.settings.dots }}"
+          data-draggable="{{ section.settings.draggable }}"
+          data-infinite="true"
+          data-section-id="{{ section.id }}"
+          data-speed="{{ section.settings.autorotate_speed | times: 1000 }}"
+          data-section-type="slickCarousels"
+          data-asnavfor=".service-list-slider-2-{{ section.id }}"
+        >
+          {%- for block in section.blocks -%}
+            <div
+              class="col quote-carosel__quote-section  quote-carousel__slide-wrapper--{{block.id}}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="position-relative">
+                <div class="image-content__image-container">
+                  <div class="image-content__image-wrapper">
+                    <h3 class="quote-item-quote">{{ block.settings.quote }}</h3>
+                    <a href="{{ block.settings.quote_url | default: "#" }}" target="_blank"><p class="quote-item-description">{{ block.settings.description }}</p></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div
+          class="row service-list-logo-slider service-list-slider-2-{{ section.id }}"
+          id="service-list-2-{{ section.id }}"
+          data-rows="{{section.settings.rows}}"
+          data-slidesToShow="{{section.blocks.size }}"
+          data-slidesToShow-mobile="{{1 }}"
+          data-slidesToShow-tablet="{{section.blocks.size }}"
+          data-slidestoscroll="{{section.blocks.size}}"
+          data-dots="{{ section.settings.dots }}"
+          data-draggable="{{ section.settings.draggable }}"
+          data-infinite="{{ section.settings.infinite }}"
+          data-section-id="{{ section.id }}"
+          data-section-type="slickCarousels"
+          data-asNavFor=".service-list-slider-1-{{ section.id }}"
+        >
+          {%- for block in section.blocks -%}
+            {%- if block.settings.image != blank -%}
+              <div class="image-content__image-container image-content__image-container_{{ block.id }}" onclick="gotoSlide({{ forloop.index0 }}, '{{ block.settings.quote_url | default: "#" }}')">
+                <div class="quote-carousel__image-slide">
+                  {% assign img_url = block.settings.image | img_url: 'master' %}
+                  <img
+                    class="quote-carousel__image"
+                    src="{{  img_url}}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                </div>
+              </div>
+
+            {%- else -%}
+              <div class="image-content__image-container" onclick="gotoSlide({{ forloop.index0 }}, '{{ block.settings.quote_url | default: "#" }})'">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if section.blocks.size == 0 -%}
+        {%- include 'no-blocks' -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+    .customstyle{{ section.id }}{
+      background-image: url('{{ section.settings.bgimage | img_url: 'master' }}');
+      background-position: bottom left;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .service-list-slider-2-{{ section.id }}{
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .service-list-slider-2-{{ section.id }} .slick-active:not(.slick-current){
+       opacity: 0.5; 
+    }
+    {%- for block in section.blocks -%}
+    .customstyle{{ section.id }} .quote-carousel__slide-wrapper--{{block.id}} .quote-item-quote {
+      color: {{block.settings.quote_color}};
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+    .customstyle{{ section.id }} .quote-carousel__slide-wrapper--{{block.id}} .quote-item-description {
+      color: {{block.settings.description_color}};
+      text-decoration: underline;
+      font-size: 12px;
+    }
+    {%- endfor -%}
+    .service-list-slider-1{
+      padding-bottom: 1.5rem;
+    }
+    .quote-carosel__quote-section{
+      text-align:center;
+    }
+    .quote-carousel__image-slide{
+      justify-content: center;
+      display: flex;
+    }
+</style>
+
+<script type="text/javascript">
+    function gotoSlide(index, link = "#"){
+      if(document.body.clientWidth < 768){
+        if(link != "#"){
+          window.open(link, '_blank');
+        }
+      }
+      $('.service-list-slider-1-{{ section.id }}').slick('slickGoTo', index);
+      $('.service-list-slider-2-{{ section.id }}').slick('slickGoTo', index);
+    }
+  window.onload = function(){
+
+
+     jQuery('.service-list-slider-1-{{ section.id }}').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+    jQuery('.service-list-slider-2-{{ section.id }}').slick('slickGoTo', nextSlide);
+  });
+    }
+</script>
+
+{% schema %}
+{
+  "name": "Quote Carousel",
+  "class": "index-section",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "select",
+      "id": "animation",
+      "options": [
+        { "value": "", "label": "None"},
+        { "value": "fade", "label": "Fade"},
+        { "value": "fade-up", "label": "Fade Up"},
+        { "value": "fade-down", "label": "Fade Down"},
+        { "value": "fade-left", "label": "Fade Left"},
+        { "value": "fade-right", "label": "Fade Right"},
+        { "value": "fade-up-right", "label": "Fade Up Right"},
+        { "value": "fade-up-left", "label": "Fade Up Left"},
+        { "value": "fade-down-right", "label": "Fade Down Right"},
+        { "value": "fade-down-left", "label": "Fade Down Left"},
+        { "value": "flip-up", "label": "Flip Up"},
+        { "value": "flip-down", "label": "Flip Down"},
+        { "value": "flip-left", "label": "Flip Left"},
+        { "value": "flip-right", "label": "Flip Right"},
+        { "value": "slide-up", "label": "Slide Up"},
+        { "value": "slide-down", "label": "Slide Down"},
+        { "value": "slide-left", "label": "Slide Left"},
+        { "value": "slide-right", "label": "Slide Right"},
+        { "value": "zoom-in", "label": "Zoom In"},
+        { "value": "zoom-in-up", "label": "Zoom In Up"},
+        { "value": "zoom-in-down", "label": "Zoom In Down"},
+        { "value": "zoom-in-left", "label": "Zoom In Left"},
+        { "value": "zoom-in-right", "label": "Zoom In Right"},
+        { "value": "zoom-out", "label": "Zoom Out"},
+        { "value": "zoom-out-up", "label": "Zoom Out Up"},
+        { "value": "zoom-out-down", "label": "Zoom Out Down"},
+        { "value": "zoom-out-left", "label": "Zoom Out Feft"},
+        { "value": "zoom-out-right", "label": "Zoom Out Right"}
+      ],
+      "label": "Select Animation"
+  },
+    {
+      "type": "text",
+      "id": "paddingsection",
+      "label": "Padding Section",
+      "default": "0px 0px 0px 0px",
+      "info": "Padding: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "paddingmobile",
+      "label": "Padding Section Mobile",
+      "default": "60px 0px 60px 0px",
+      "info": "Padding: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "marginsection",
+      "label": "Margin Section",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "marginmobile",
+      "label": "Margin Mobile",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    },
+    {
+      "type": "color",
+      "id": "bgsection",
+        "label": "Background Section",
+        "default": "#fefefe"
+    },
+    {
+      "type": "image_picker",
+      "id": "bgimage",
+        "label": "Background Image"
+
+    },
+    {
+      "type": "text",
+      "id": "title_top",
+      "label": "Sub Title Top",
+      "default": "Sub Title Top"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Lookbook"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "select",
+      "id": "setwidth",
+      "label": "Full Width",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Box"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Container Fluid"
+        },
+        {
+          "value": "full",
+          "label": "Full"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "show",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Show",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Auto Slide Speed",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Quote",
+      	  "default": "Lorem Ipsum"
+        }
+        ,
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+      	  "default": "Lorem Ipsum"
+        },
+        {
+          "type": "url",
+          "id": "quote_url",
+          "label": "Link"
+        },
+        {
+          "type": "color",
+          "id": "quote_color",
+          "label": "Quote Color",
+      	  "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Description Color",
+      	  "default": "#ffffff"
+        }
+
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quote Carousel",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "quote"
+        },
+        {
+          "type": "quote"
+        },
+        {
+          "type": "quote"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
